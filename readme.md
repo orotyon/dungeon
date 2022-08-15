@@ -37,7 +37,6 @@ devServer:contentBaseが最新では存在しない設定なので
 /src/js/app.jsを適当でいいから作ってから```npm run build```を試してみる
 
 
-
 ### hostingの設定
 ```sh
 firebase init
@@ -51,7 +50,10 @@ firebase init
 ? Set up automatic builds and deploys with GitHub? Yes? What script should be run before every deploy?
   -> npm run build
 ```
-404.htmlとかindex.htmlとかいらないものが入ってくるので消す
+404.htmlとかindex.htmlとかはいってくる
+index.htmlは/dist/js/bandle.jsを参照するようにする
+404.htmlはhostingが自動的に出してくれるのでとりあえず置いておく（気が向いたらいい感じに変える）
+
 
 ### emulatorをインストールする
 [Emulator Suite](https://firebase.google.com/docs/emulator-suite/install_and_configure)
