@@ -37,6 +37,7 @@ devServer:contentBaseが最新では存在しない設定なので
 /src/js/app.jsを適当でいいから作ってから```npm run build```を試してみる
 
 
+
 ### hostingの設定
 ```sh
 firebase init
