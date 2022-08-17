@@ -1,4 +1,4 @@
-# お試しダンジョンゲーム
+# [お試しダンジョンゲーム](https://dungeon-928fb.web.app/)
 ## セットアップ
 [Firebaseでモジュールバンドラーを使用する](https://firebase.google.com/docs/web/module-bundling)を参考にして進める
 ### 諸々を以下の通りインストール
@@ -63,3 +63,4 @@ index.htmlは/dist/js/bandle.jsを参照するようにする
 firebase init emulators
 # emulatorの実行
 firebase emulators:start
+
