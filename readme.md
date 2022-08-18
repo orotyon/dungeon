@@ -63,4 +63,7 @@ index.htmlは/dist/js/bandle.jsを参照するようにする
 firebase init emulators
 # emulatorの実行
 firebase emulators:start
+```
 
+## PIXIjs関係
+[json作成ツール](https://tansio.net/mobile/twitter/00002/)

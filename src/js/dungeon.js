@@ -49,5 +49,18 @@ export function createDungeonScene(){
         }
     }
 
+    const textureArray = [];
+    textureArray.push(PIXI.Texture.from('./res/hito/hito01.png'));
+    textureArray.push(PIXI.Texture.from('./res/hito/hito02.png'));
+    textureArray.push(PIXI.Texture.from('./res/hito/hito03.png'));
+    textureArray.push(PIXI.Texture.from('./res/hito/hito02.png'));
+
+    const hito = new PIXI.AnimatedSprite(textureArray);
+    hito.animationSpeed = 0.1;
+    hito.x = 0;
+    hito.y = 0;
+    hito.play();
+    dungeonScene.addChild(hito);
+
     return dungeonScene;
 }
