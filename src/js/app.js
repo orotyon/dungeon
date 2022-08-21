@@ -4,7 +4,7 @@ import * as Dungeon from './dungeon.js';
 /* ゲーム全体で使う定数 */
 const GAME={
     WIDTH:640,
-    HEIGHT:320
+    HEIGHT:320+80
 }
 // ゲーム全体で使う変数
 const gameScenes = {
