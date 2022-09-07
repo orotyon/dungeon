@@ -89,7 +89,7 @@ export class Player{
     set setX(x){
         this.x=x;
         for(let i=0;i<4;i++){
-            this.elmAnimPlayer[i].x=x*this.TILE.X;
+            this.elmAnimPlayer[i].y=x*this.TILE.X;
         }
     }
     get getY(){
@@ -97,9 +97,8 @@ export class Player{
     }
     set setY(y){
         this.y=y
-        console.log(y);
         for(let i=0;i<4;i++){
-            this.elmAnimPlayer[i].y = y * this.TILE.Y;
+            this.elmAnimPlayer[i].x = y * this.TILE.Y;
         }
     }
 
@@ -108,7 +107,6 @@ export class Player{
             this.elmAnimPlayer[i].visible=false;
         }
         this.elmAnimPlayer[vector].visible=true;
-        console.log(vector);
     }
 
 }

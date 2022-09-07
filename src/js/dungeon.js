@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import * as PLAYER from './player.js';
+import * as OJB from './obj';
 
 
 const tile1 = PIXI.Texture.from('./res/tile1.png');
@@ -8,6 +9,7 @@ const TILE={
     Y:32
 };
 const player1 = new PLAYER.Player(TILE);
+const objects = new OJB.Object(TILE);
 
 const dungeonMap = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -40,6 +42,7 @@ export function createDungeonScene(){
     }
 
     // プレイヤーの追加
+    dungeonScene.addChild(objects.getObjects);
     dungeonScene.addChild(player1.getPlayer);
 
     // 移動ボタンの追加
@@ -53,7 +56,7 @@ export function createDungeonScene(){
     dungeonScene.addChild(buttonUp);
 
     const buttonLeft = new PIXI.Text('←');
-    buttonLeft.x = dungeonMap[0].length /2 * TILE.X- (TILE.X*1.5);
+    buttonLeft.x = dungeonMap[0].length /2 * TILE.X- (TILE.X*1.7);
     buttonLeft.y = dungeonMap.length * TILE.Y + TILE.Y/2;
     buttonLeft
     .on('click', moveLeft)
@@ -62,7 +65,7 @@ export function createDungeonScene(){
     dungeonScene.addChild(buttonLeft);
 
     const buttonRight = new PIXI.Text('→');
-    buttonRight.x = dungeonMap[0].length /2 * TILE.X + (TILE.X *0.05);
+    buttonRight.x = dungeonMap[0].length /2 * TILE.X + (TILE.X *0.25);
     buttonRight.y = dungeonMap.length * TILE.Y + TILE.Y/2;
     buttonRight
     .on('click', moveRight)
@@ -103,28 +106,36 @@ function moveUp(){
     move('ArrowUp');
 }
 function move(key){
-    if(key=='ArrowDown'){
-        player1.vector = PLAYER.VECTOR.DOWN;
-        if(player1.getY < dungeonMap.length - 1){
-            player1.setY = player1.getY+1;
-        }
-    }
-    if(key=='ArrowLeft'){
-        player1.vector = PLAYER.VECTOR.LEFT;
-        if(player1.getX > 0 ){
-            player1.setX = player1.getX-1;
-        }
-    }
     if(key=='ArrowRight'){
         player1.vector = PLAYER.VECTOR.RIGHT;
-        if(player1.getX < dungeonMap[0].length - 1){
-            player1.setX = player1.getX+1;
+        if(objects.checkMoveable(player1.getX,player1.getY+1)){
+            if(player1.getY < dungeonMap[player1.getX].length - 1){
+                player1.setY = player1.getY+1;
+            }
         }
     }
     if(key=='ArrowUp'){
         player1.vector = PLAYER.VECTOR.UP;
-        if(player1.getY > 0 ){
-            player1.setY = player1.getY-1;
+        if(objects.checkMoveable(player1.getX-1,player1.getY)){
+            if(player1.getX > 0 ){
+                player1.setX = player1.getX-1;
+            }
+        }
+    }
+    if(key=='ArrowDown'){
+        player1.vector = PLAYER.VECTOR.DOWN;
+        if(objects.checkMoveable(player1.getX+1,player1.getY)){
+            if(player1.getX < dungeonMap.length - 1){
+                player1.setX = player1.getX+1;
+            }
+        }
+    }
+    if(key=='ArrowLeft'){
+        player1.vector = PLAYER.VECTOR.LEFT;
+        if(objects.checkMoveable(player1.getX,player1.getY-1)){
+            if(player1.getY > 0 ){
+                player1.setY = player1.getY-1;
+            }
         }
     }
 }
