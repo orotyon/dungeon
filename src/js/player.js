@@ -9,6 +9,7 @@ export const VECTOR={
 export class Player{
     x=0;
     y=0;
+    vision=4;
     TILE;
     elmPlayer = new PIXI.Container();
     elmAnimPlayer = [];
@@ -100,6 +101,9 @@ export class Player{
         for(let i=0;i<4;i++){
             this.elmAnimPlayer[i].x = y * this.TILE.Y;
         }
+    }
+    get getVision(){
+        return this.vision;
     }
 
     set vector(vector){
