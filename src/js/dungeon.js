@@ -13,7 +13,7 @@ const MAPSIZE={
     Y:20
 }
 
-const player1 = new PLAYER.Player(TILE);
+const player1 = new PLAYER.Player(TILE,MAPSIZE);
 const objectManager = new OBJECT.ObjectManager(TILE,MAPSIZE);
 
 const dungeonMap = [
@@ -50,6 +50,7 @@ export function createDungeonScene(){
     dungeonScene.addChild(objectManager.getObjects);
     dungeonScene.addChild(player1.getPlayer);
     objectManager.setVision(player1.getX,player1.getY,player1.vision);
+    dungeonScene.addChild(player1.getStatus);
 
     // 移動ボタンの追加
     const buttonUp = new PIXI.Text('↑');
@@ -111,12 +112,15 @@ function moveRight(){
 function moveUp(){
     move('ArrowUp');
 }
+
 function move(key){
+    let moved=false;
     if(key=='ArrowRight'){
         player1.vector = PLAYER.VECTOR.RIGHT;
         if(objectManager.checkMoveable(player1.getX,player1.getY+1)){
             if(player1.getY < dungeonMap[player1.getX].length - 1){
                 player1.setY = player1.getY+1;
+                moved=true;
             }
         }
     }
@@ -125,6 +129,7 @@ function move(key){
         if(objectManager.checkMoveable(player1.getX-1,player1.getY)){
             if(player1.getX > 0 ){
                 player1.setX = player1.getX-1;
+                moved=true;
             }
         }
     }
@@ -133,6 +138,7 @@ function move(key){
         if(objectManager.checkMoveable(player1.getX+1,player1.getY)){
             if(player1.getX < dungeonMap.length - 1){
                 player1.setX = player1.getX+1;
+                moved=true;
             }
         }
     }
@@ -141,10 +147,18 @@ function move(key){
         if(objectManager.checkMoveable(player1.getX,player1.getY-1)){
             if(player1.getY > 0 ){
                 player1.setY = player1.getY-1;
+                moved=true;
             }
         }
     }
 
     // 視界のアップデート
     objectManager.setVision(player1.getX,player1.getY,player1.getVision);
+
+    // 移動後の処理
+    if(moved==true){
+        player1.sp = player1.sp-1;
+        objectManager.checkTriggers(player1);
+    }
 }
+

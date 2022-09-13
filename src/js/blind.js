@@ -5,7 +5,6 @@ class Blind{
     TILE;
     blindAnim;
     constructor(TILE,x,y){
-        console.log('blind constructor newed!');
         this.TILE=TILE;
         const blindTexuture01 = PIXI.Texture.from('./res/blind/blind01.png');
         const blindTexuture02 = PIXI.Texture.from('./res/blind/blind02.png');

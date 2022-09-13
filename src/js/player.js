@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { TilingSprite } from 'pixi.js';
 
 export const VECTOR={
     DOWN:0,
@@ -6,15 +7,43 @@ export const VECTOR={
     RIGHT:2,
     UP:3
 }
+const STATUS_TYPE={
+    HP:0,
+    MHP:1,
+    SP:2,
+    MSP:3
+}
 export class Player{
     x=0;
     y=0;
+    _hp=100;
+    get hp(){
+        return this._hp;
+    }
+    set hp(hp){
+        this._hp=hp;
+        this.elmPlayerTexts[STATUS_TYPE.HP].text=hp;
+    }
+    _sp=100;
+    get sp(){
+        return this._sp;
+    }
+    set sp(sp){
+        this._sp=sp;
+        this.elmPlayerTexts[STATUS_TYPE.SP].text=sp;
+    }
+    mhp=100;
+    msp=100;
     vision=4;
     TILE;
+    MAPSIZE;
     elmPlayer = new PIXI.Container();
     elmAnimPlayer = [];
+    elmPlayerStatus = new PIXI.Container();
+    elmPlayerTexts = [];
     
-    constructor(TILE){
+    constructor(TILE,MAPSIZE){
+        this.MAPSIZE=MAPSIZE;
         this.TILE=TILE;
         this.hito01 = PIXI.Texture.from('./res/hito/hito01.png')
         this.hito02 = PIXI.Texture.from('./res/hito/hito02.png')
@@ -77,11 +106,46 @@ export class Player{
         this.elmAnimPlayer[VECTOR.UP].play();
         this.elmPlayer.addChild(this.elmAnimPlayer[VECTOR.UP]);
 
-        // this.vector=VECTOR.DOWN;
+        // ステータス
+        const hpText    = new PIXI.Text('HP       /');
+        const nowhpText = new PIXI.Text(this.hp);
+        const mhpText   = new PIXI.Text(this.mhp);
+        const spText    = new PIXI.Text('SP       /');
+        const nowspText = new PIXI.Text(this.sp);
+        const mspText   = new PIXI.Text(this.msp);
+        hpText.x = 20;
+        hpText.y = TILE.X*MAPSIZE.X+10;
+        nowhpText.x = 60;
+        nowhpText.y = TILE.X*MAPSIZE.X+10;
+        mhpText.x = 120;
+        mhpText.y = TILE.X*MAPSIZE.X+10;
+        spText.x = 20;
+        spText.y = TILE.X*MAPSIZE.X+40;
+        
+        nowspText.x = 60;
+        nowspText.y = TILE.X*MAPSIZE.X+40;
+        mspText.x = 120;
+        mspText.y = TILE.X*MAPSIZE.X+40;
+        this.elmPlayerStatus.addChild(hpText);
+        this.elmPlayerStatus.addChild(nowhpText);
+        this.elmPlayerStatus.addChild(mhpText);
+        this.elmPlayerStatus.addChild(spText);
+        this.elmPlayerStatus.addChild(nowspText);
+        this.elmPlayerStatus.addChild(mspText);
+        this.elmPlayerTexts[STATUS_TYPE.HP]=nowhpText;
+        this.elmPlayerTexts[STATUS_TYPE.MHP]=mhpText;
+        this.elmPlayerTexts[STATUS_TYPE.SP]=nowspText;
+        this.elmPlayerTexts[STATUS_TYPE.MSP]=mspText;
+    
+        
+
         }
 
     get getPlayer(){
         return this.elmPlayer;
+    }
+    get getStatus(){
+        return this.elmPlayerStatus;
     }
 
     get getX(){
