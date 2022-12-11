@@ -24,12 +24,19 @@ export class Object{
     set y(value) {
         this._y = value;
     }
+    get terrain() {
+        return this._terrain;
+    }
+    set terrain(value) {
+        this._terrain = value;
+    }
     TILE;
     _passable=false;
     _moveable=false;
     _transparent=false;
     objSprites=[];
     _vector=VECTOR.DOWN;
+    _terrain = false;
     
 
 /**
@@ -51,6 +58,7 @@ export class Object{
         this._moveable=false;
         this._passable=false;
         this._vector=vector;
+        this.terrain=true;
 
         this.objSprites[VECTOR.DOWN]= new PIXI.Sprite(downTexture);
         this.objSprites[VECTOR.DOWN].visible=false;
@@ -68,7 +76,7 @@ export class Object{
         this.objSprites[VECTOR.UP].visible=false;
         this.objSprites[VECTOR.UP].x=y*TILE.X;
         this.objSprites[VECTOR.UP].y=x*TILE.Y;
-        this.objSprites[VECTOR.BROKEN]= new PIXI.Sprite(upTexture);
+        this.objSprites[VECTOR.BROKEN]= new PIXI.Sprite(brokenTexture);
         this.objSprites[VECTOR.BROKEN].visible=false;
         this.objSprites[VECTOR.BROKEN].x=y*TILE.X;
         this.objSprites[VECTOR.BROKEN].y=x*TILE.Y;
@@ -79,7 +87,14 @@ export class Object{
      * @param {*} player 
      * @param {*} objectMap 
      */
-    checkTrigger(player,objectMap){
+    checkTrigger(player,objectMap){}
+
+    /**
+     * 上に乗っかった処理
+     * @param {*} player 
+     */
+    overObject(player){
+        console.log('super class overObject');
     }
 
     getSprites(){
@@ -141,7 +156,10 @@ export class Object{
      * @param {VECTOR} vector
      */
     set vector(vector){
+        for(let i=0;i<5;i++){
+            this.objSprites[i].visible=false;
+        }
+        this.objSprites[vector].visible=true;
         this._vector=vector;
     }
-
 }

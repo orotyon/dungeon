@@ -82,13 +82,9 @@ export class Trap1 extends OBJECT.Object{
             this.calcAngle(startX,startY,map);
             // プレイヤーがレンジ内にいる場合
             if(map[player.x][player.y]!=-1){
-                console.log("罠を踏んだ処理");
                 player.hp=player.hp-this.damage;
             }
-            console.log(map);
         }
-
-        // console.log("trap1.js checkTrigger");
     }
 
     // 罠の射角計算
@@ -156,5 +152,13 @@ export class Trap1 extends OBJECT.Object{
                 if(map[x+1][y]==-1 || count < map[x+1][y])
                     this.recursionRange(x+1,y,range,map,count+1);
         }
+    }
+
+    /**
+     * 上に乗った時の処理
+     * @param {*} player 
+     */
+    overObject(player){
+        this.vector=OBJECT.VECTOR.BROKEN;
     }
 }

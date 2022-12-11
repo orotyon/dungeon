@@ -1,9 +1,19 @@
 import * as PIXI from 'pixi.js';
 import * as PLAYER from './player.js';
 import * as OBJECT from './objects.js';
+import * as BUTTON from './gameInterface/button.js';
 
 
 const tile1 = PIXI.Texture.from('./res/tile1.png');
+const arrowUpOn = PIXI.Texture.from('./res/cursor/cursor_up_on.png');
+const arrowUpOff = PIXI.Texture.from('./res/cursor/cursor_up_off.png');
+const arrowLeftOn = PIXI.Texture.from('./res/cursor/cursor_left_on.png');
+const arrowLeftOff = PIXI.Texture.from('./res/cursor/cursor_left_off.png');
+const arrowRightOn = PIXI.Texture.from('./res/cursor/cursor_right_on.png');
+const arrowRightOff = PIXI.Texture.from('./res/cursor/cursor_right_off.png');
+const arrowDownOn = PIXI.Texture.from('./res/cursor/cursor_down_on.png');
+const arrowDownOff = PIXI.Texture.from('./res/cursor/cursor_down_off.png');
+
 const TILE={
     X:32,
     Y:32
@@ -15,6 +25,10 @@ const MAPSIZE={
 
 const player1 = new PLAYER.Player(TILE,MAPSIZE);
 const objectManager = new OBJECT.ObjectManager(TILE,MAPSIZE);
+const arrowUpButton = new BUTTON.Button(500,325,arrowUpOn,arrowUpOff)
+const arrowLeftButton = new BUTTON.Button(465,345,arrowLeftOn,arrowLeftOff)
+const arrowRightButton = new BUTTON.Button(535,345,arrowRightOn,arrowRightOff)
+const arrowDownButton = new BUTTON.Button(500,365,arrowDownOn,arrowDownOff)
 
 const dungeonMap = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -52,64 +66,79 @@ export function createDungeonScene(){
     objectManager.setVision(player1.getX,player1.getY,player1.vision);
     dungeonScene.addChild(player1.getStatus);
 
-    // 移動ボタンの追加
-    const buttonUp = new PIXI.Text('↑');
-    buttonUp.x = dungeonMap[0].length /2 * TILE.X - (TILE.X/2);
-    buttonUp.y = dungeonMap.length * TILE.Y;
-    buttonUp
-    .on('click', moveUp)
-    .on('touchstart', moveUp);
-    buttonUp.interactive = true;
-    dungeonScene.addChild(buttonUp);
-
-    const buttonLeft = new PIXI.Text('←');
-    buttonLeft.x = dungeonMap[0].length /2 * TILE.X- (TILE.X*1.7);
-    buttonLeft.y = dungeonMap.length * TILE.Y + TILE.Y/2;
-    buttonLeft
-    .on('click', moveLeft)
-    .on('touchstart', moveLeft);
-    buttonLeft.interactive = true;
-    dungeonScene.addChild(buttonLeft);
-
-    const buttonRight = new PIXI.Text('→');
-    buttonRight.x = dungeonMap[0].length /2 * TILE.X + (TILE.X *0.25);
-    buttonRight.y = dungeonMap.length * TILE.Y + TILE.Y/2;
-    buttonRight
-    .on('click', moveRight)
-    .on('touchstart', moveRight);
-    buttonRight.interactive = true;
-    dungeonScene.addChild(buttonRight);
-
-    const buttonDown = new PIXI.Text('↓');
-    buttonDown.x = dungeonMap[0].length /2 * TILE.X - (TILE.X/2);
-    buttonDown.y = dungeonMap.length * TILE.Y+TILE.Y;
-    buttonDown
-    .on('click', moveDown)
-    .on('touchstart', moveDown);
-    buttonDown.interactive = true;
-    dungeonScene.addChild(buttonDown);
-
+    //test
+    arrowUpButton.buttonContainer.on('mousedown',moveUpPress);
+    arrowUpButton.buttonContainer.on('touchstart',moveUpPress);
+    arrowUpButton.buttonContainer.on('mouseup',moveUp);
+    arrowUpButton.buttonContainer.on('touchend',moveUp);
+    dungeonScene.addChild(arrowUpButton.getContainer());
+    arrowRightButton.buttonContainer.on('mousedown',moveRightPress);
+    arrowRightButton.buttonContainer.on('touchstart',moveRightPress);
+    arrowRightButton.buttonContainer.on('mouseup',moveRight);
+    arrowRightButton.buttonContainer.on('touchend',moveRight);
+    dungeonScene.addChild(arrowRightButton.getContainer());
+    arrowLeftButton.buttonContainer.on('mousedown',moveLeftPress);
+    arrowLeftButton.buttonContainer.on('touchstart',moveLeftPress);
+    arrowLeftButton.buttonContainer.on('mouseup',moveLeft);
+    arrowLeftButton.buttonContainer.on('touchend',moveLeft);
+    dungeonScene.addChild(arrowLeftButton.getContainer());
+    arrowDownButton.buttonContainer.on('mousedown',moveDownPress);
+    arrowDownButton.buttonContainer.on('touchstart',moveDownPress);
+    arrowDownButton.buttonContainer.on('mouseup',moveDown);
+    arrowDownButton.buttonContainer.on('touchend',moveDown);
+    dungeonScene.addChild(arrowDownButton.getContainer());
 
 
     return dungeonScene;
 }
 
-// キーボードイベント
+// キー押上イベント
+document.addEventListener('keydown', keydown_ivent);
+function keydown_ivent(e) {
+}
+function moveUpPress(){
+    arrowUpButton.objSprites[BUTTON.MODE.ON].visible=true;
+    arrowUpButton.objSprites[BUTTON.MODE.OFF].visible=false;
+}
+function moveDownPress(){
+    arrowDownButton.objSprites[BUTTON.MODE.ON].visible=true;
+    arrowDownButton.objSprites[BUTTON.MODE.OFF].visible=false;
+}
+
+function moveRightPress(){
+    arrowRightButton.objSprites[BUTTON.MODE.ON].visible=true;
+    arrowRightButton.objSprites[BUTTON.MODE.OFF].visible=false;
+}
+
+function moveLeftPress(){
+    arrowLeftButton.objSprites[BUTTON.MODE.ON].visible=true;
+    arrowLeftButton.objSprites[BUTTON.MODE.OFF].visible=false;
+}
+
+// キー押下イベント
 document.addEventListener('keyup', keyup_ivent);
 function keyup_ivent(e) {
     move(e.key);
     return false; 
 }
 function moveDown(){
+    arrowDownButton.objSprites[BUTTON.MODE.ON].visible=false;
+    arrowDownButton.objSprites[BUTTON.MODE.OFF].visible=true;
     move('ArrowDown');
 }
 function moveLeft(){
+    arrowLeftButton.objSprites[BUTTON.MODE.ON].visible=false;
+    arrowLeftButton.objSprites[BUTTON.MODE.OFF].visible=true;
     move('ArrowLeft');
 }
 function moveRight(){
+    arrowRightButton.objSprites[BUTTON.MODE.ON].visible=false;
+    arrowRightButton.objSprites[BUTTON.MODE.OFF].visible=true;
     move('ArrowRight');
 }
 function moveUp(){
+    arrowUpButton.objSprites[BUTTON.MODE.ON].visible=false;
+    arrowUpButton.objSprites[BUTTON.MODE.OFF].visible=true;
     move('ArrowUp');
 }
 
@@ -159,6 +188,7 @@ function move(key){
     if(moved==true){
         player1.sp = player1.sp-1;
         objectManager.checkTriggers(player1);
+        objectManager.overObjects(player1);
     }
 }
 
